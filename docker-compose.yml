@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: java-shop-app
+    # Порт 8080 наружу не выпускаем, к нему будет доступ только у Nginx внутри сети Docker
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    ports:
+      - "80:80" # Открываем стандартный веб-порт на вашей машине
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
